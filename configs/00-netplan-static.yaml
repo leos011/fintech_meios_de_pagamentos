@@ -1,0 +1,28 @@
+# Configuração de Rede Estática - Ubuntu Server (Grupo 2: Fintech)
+# Caminho no servidor: /etc/netplan/00-netplan-static.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    # Interface Externa (WAN) - Recebe requisições das APIs REST/HTTPS
+    enp0s3:
+      dhcp4: false
+      addresses:
+        - 192.168.100.10/24
+      routes:
+        - to: default
+          via: 192.168.100.1
+      nameservers:
+        addresses:
+          - 1.1.1.1
+          - 8.8.8.8
+
+    # Interface Interna (LAN) - Comunicação restrita com núcleo financeiro/banco
+    enp0s8:
+      dhcp4: false
+      addresses:
+        - 10.10.20.1/24
+      routes:
+        # Rota estática para a sub-rede interna de liquidação/serviços críticos
+        - to: 10.10.30.0/24
+          via: 10.10.20.254
