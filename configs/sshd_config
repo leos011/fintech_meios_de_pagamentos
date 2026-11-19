@@ -1,0 +1,40 @@
+# ==============================================================================
+# PROJETO: Segurança da Informação - Infraestrutura Fintech (Grupo 2)
+# ARQUIVO: configs/sshd_config
+# CAMINHO NO SERVIDOR: /etc/ssh/sshd_config
+# ==============================================================================
+
+# Porta customizada para mitigar varreduras automatizadas na porta 22
+Port 2222
+Protocol 2
+
+# Restrições de privilégio e controle de acesso
+PermitRootLogin no
+AllowUsers matheus samuel leonardo
+MaxAuthTries 3
+MaxSessions 2
+LoginGraceTime 30
+
+# Autenticação exclusiva por chave pública/privada
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+KbdInteractiveAuthentication no
+UsePAM yes
+
+# Desativação de recursos desnecessários em servidor de produção
+X11Forwarding no
+AllowTcpForwarding no
+AllowAgentForwarding no
+PermitTunnel no
+PrintMotd no
+
+# Auditoria e rastreabilidade de acessos
+SyslogFacility AUTH
+LogLevel VERBOSE
+
+# Mantém compatibilidade com variáveis de idioma e SFTP interno
+AcceptEnv LANG LC_*
+Subsystem sftp /usr/lib/openssh/sftp-server
