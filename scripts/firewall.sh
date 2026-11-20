@@ -11,8 +11,8 @@ set -e
 # ------------------------------------------------------------------------------
 # 1. VARIÁVEIS DE AMBIENTE E REDE
 # ------------------------------------------------------------------------------
-IF_WAN="enp0s3"                  # Interface externa (Internet / Clientes API)
-IF_LAN="enp0s8"                  # Interface interna (Rede corporativa)
+IF_WAN="eth0"                  # Interface externa (Internet / Clientes API)
+IF_LAN="lan0"                  # Interface interna (Rede corporativa)
 REDE_LAN="10.10.20.0/24"         # Sub-rede interna autorizada
 PORTA_API="443"                  # Porta HTTPS para transações bancárias (REST)
 PORTA_SSH="2222"                 # Porta customizada do SSH (Hardening)
