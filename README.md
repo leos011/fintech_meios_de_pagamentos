@@ -10,6 +10,25 @@ Projeto prático de reformulação e blindagem de infraestrutura local em **Ubun
 
 ## Arquitetura da Solução
 
+```mermaid
+flowchart LR
+    WAN["Clientes API / Admin<br/>(WAN: 192.168.100.0/24)"]
+    subgraph FW["Servidor Ubuntu Hardened (iptables: INPUT/FORWARD DROP)"]
+        direction TB
+        IFW["Interface Externa<br/>enp0s3 / eth0 (192.168.100.10)"]
+        API["API REST/HTTPS :443<br/>(hashlimit 30/s por IP)"]
+        SSH["OpenSSH :2222<br/>(PubKey Only | AllowUsers)"]
+        SEC["Camada Interna<br/>GPG RSA-3072 + Auditoria SHA-256"]
+        IFL["Interface Interna<br/>enp0s8 / lan0 (10.10.20.1)"]
+        IFW --> API & SSH
+        API & SSH --> SEC --> IFL
+    end
+    LAN["Núcleo de Liquidação / DB<br/>(LAN: 10.10.20.0/24 -> 10.10.30.0/24)"]
+
+    WAN -- "HTTPS (443) / SSH (2222)" --> IFW
+    IFL -- "Rota Estática via 10.10.20.254" --> LAN
+```
+
 A infraestrutura garante os pilares de **Confidencialidade, Integridade e Disponibilidade (CID)** por meio de quatro camadas:
 1. **Segurança Perimetral (`scripts/firewall.sh`):** Filtragem de pacotes via `iptables` com política padrão `DROP`, liberação restrita para tráfego HTTPS (443/TCP) e SSH administrativo (2222/TCP), proteção contra *port scanning* e *rate-limiting* contra DoS/força bruta.
 2. **Hardening do Sistema (`configs/sshd_config` e `scripts/hardening.sh`):** Alteração da porta padrão do SSH para `2222`, bloqueio de login `root`, autenticação exclusiva por chaves assimétricas, restrição de usuários (`AllowUsers matheus samuel leonardo`) e ajuste de permissões em `/etc/` e `/var/log/`.
