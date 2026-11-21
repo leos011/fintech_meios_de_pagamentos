@@ -32,8 +32,8 @@ echo "[INFO] Iniciando aplicação das regras de firewall da Fintech..."
 iptables -F
 iptables -X
 iptables -Z
-iptables -t nat -F
-iptables -t mangle -F
+iptables -t nat -F 2>/dev/null || true
+iptables -t mangle -F 2>/dev/null || true
 
 # ------------------------------------------------------------------------------
 # 3. POLÍTICAS PADRÃO (BLOQUEIO TOTAL POR PADRÃO)
@@ -84,7 +84,7 @@ iptables -A INPUT -p tcp --dport "$PORTA_API" -m conntrack --ctstate NEW \
 iptables -A INPUT -p tcp --dport "$PORTA_API" -m conntrack --ctstate NEW -j ACCEPT
 
 # 6.3 Diagnóstico de rede controlado (ICMP Ping limitado a 2 pacotes/s na LAN)
-iptables -A INPUT -i "$IF_LAN" -p icmp --icmp-type echo-request \
+iptables -A INPUT -s "$REDE_LAN" -p icmp --icmp-type echo-request \
   -m limit --limit 2/sec --limit-burst 4 -j ACCEPT
 
 # ------------------------------------------------------------------------------
