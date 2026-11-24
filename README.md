@@ -4,9 +4,9 @@ Projeto prático de reformulação e blindagem de infraestrutura local em **Ubun
 
 ## Integrantes (Grupo 2)
 
-* **Matheus** (`matheus@fintech.local`)
-* **Samuel** (`samuel@fintech.local`)
-* **Leonardo** (`leonardo@fintech.local`)
+* **Matheus Felipe Bastos Pereira** (`matheus@fintech.local`)
+* **Samuel Antunes de Oliveira Gomes** (`samuel@fintech.local`)
+* **Leonardo da Silva Matos** (`leonardo@fintech.local`)
 
 ## Arquitetura da Solução
 
